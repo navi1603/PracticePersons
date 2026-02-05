@@ -54,11 +54,11 @@ public class AppMenu {
     }
 
     private void avg() {
-
+        System.out.println("Средний возраст: ");
     }
 
     private void median(){
-
+        System.out.println("Медиана возраста: ");
     }
 
     private void young(){
@@ -70,24 +70,26 @@ public class AppMenu {
     }
 
     private void print(){
+        System.out.println("Список всех пользователей:");
 
     }
 
     private void help(){
         String helpMessage = """
                 Список доступных комманд:
-                in - 
-                del -
-                count -
-                avg -
-                median -
-                young -
-                old -
-                print -
-                help -
-                exit -
+                
+                in - добавить нового пользователя.
+                del - удалить пользователя по номеру паспорта.
+                count - количество добавленных пользователей.
+                avg - вывести средний возраст пользователей.
+                median - вывести медиану возраста всех пользователей.
+                young - вывести самого молодого пользователя.
+                old - вывести самого старшего пользователя.
+                print - вывести всех пользователей, отсортированных по возрасту.
+                help - отобразить справку.
+                exit - выйти из приложения.
                 """;
-        System.out.println();
+        System.out.println(helpMessage);
     }
 
     private void exit(){
