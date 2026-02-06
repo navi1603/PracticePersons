@@ -11,7 +11,8 @@ import java.util.Set;
 public class AppMenu {
     Set<Person> persons;
     BufferedReader br;
-    private String regExp = "^\\d{3,}$";;
+    private String regExp = "^\\d{3,}$";
+    ;
 
     public AppMenu() {
         br = new BufferedReader(new InputStreamReader(System.in));
@@ -20,7 +21,7 @@ public class AppMenu {
 
     public void start() throws IOException {
         help();
-        while(true) {
+        while (true) {
             String key = br.readLine().toLowerCase().strip();
 
             switch (key) {
@@ -54,12 +55,12 @@ public class AppMenu {
         System.out.println("Добавление нового пользователя.\nВведите номер паспорта: ");
         String passportNumber = br.readLine();
         Person newPerson = new Person(passportNumber);
-        if(!persons.contains(newPerson)) {
+        if (!persons.contains(newPerson)) {
             System.out.println("Введите имя: ");
             newPerson.setName(br.readLine());
 
             System.out.println("Введите возраст: ");
-            if(br.readLine().matches(regExp)) {
+            if (br.readLine().matches(regExp)) {
                 newPerson.setAge(Integer.parseInt(br.readLine()));
             }
             persons.add(newPerson);
@@ -70,6 +71,7 @@ public class AppMenu {
         }
 
     }
+
     //O(1)
     /*Приложение запрашивает номер паспорта и удаляет пользователя с таким паспортом.
     Если пользователь удалён, выводится сообщение.
@@ -79,18 +81,20 @@ public class AppMenu {
         String passportNumber = br.readLine();
         Person newPerson = new Person(passportNumber);
 
-        if(persons.remove(newPerson)) {
+        if (persons.remove(newPerson)) {
             System.out.printf("Пользователь c номером паспорта %s успешно удален!%n", newPerson.getPassportNumber());
         } else {
             System.out.println("Пользователь с указанным паспортом не найден");
         }
 
     }
+
     //O(1)
     //Выводит количество пользователей в памяти.
     private void countPersons() {
         System.out.printf("Количество пользователей %d. %n", persons.size());
     }
+
     //O(n)
     //Программа рассчитывает и выводит средний возраст всех пользователей.
     //В консоль выводится вычисленное значение
@@ -98,30 +102,35 @@ public class AppMenu {
     private void avgAgePersons() {
         System.out.println("Средний возраст: %2d ");
     }
+
     //O(n)
     /*Программа рассчитывает и выводит медиану возраста всех пользователей.
     В консоль выводится вычисленное значение:
     Если не добавлено ни одного пользователя, выводится сообщение.*/
-    private void medianAgePersons(){
+    private void medianAgePersons() {
         System.out.println("Медиана возраста: ");
     }
+
     //O(log n)
     //Выводит самого молодого пользователя.
-    private void youngPerson(){
+    private void youngPerson() {
 
     }
+
     //O(log n)
     //Выводит самого старшего пользователя.
-    private void oldPerson(){
+    private void oldPerson() {
 
     }
+
     //O(n)
     //Построчно выводит всех пользователей, отсортированных по возрасту от младшего к старшему.
-    private void printAllPersons(){
+    private void printAllPersons() {
         System.out.println("Список всех пользователей:");
 
     }
-    private void help(){
+
+    private void help() {
         String helpMessage = """
                 Список доступных комманд:
                 
@@ -139,7 +148,7 @@ public class AppMenu {
         System.out.println(helpMessage);
     }
 
-    private void exit(){
+    private void exit() {
         System.out.println("Программа завершена");
         System.exit(0);
     }

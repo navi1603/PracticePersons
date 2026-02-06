@@ -38,7 +38,7 @@ public class Person implements Comparable<Person> {
     }
 
     public void setAge(int age) {
-        if(age > 0) {
+        if (age > 0) {
             this.age = age;
         } else {
             System.out.println("Возраст не может быть отрицательным числом или 0.");
