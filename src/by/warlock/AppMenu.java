@@ -5,32 +5,33 @@ import by.warlock.models.Person;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AppMenu {
-    List<Person> persons;
+    Set<Person> persons;
     BufferedReader br;
+    private String regExp = "^\\d{3,}$";;
 
     public AppMenu() {
         br = new BufferedReader(new InputStreamReader(System.in));
-        persons = new ArrayList<>();
-
+        persons = new HashSet<>();
     }
 
     public void start() throws IOException {
+        help();
         while(true) {
             String key = br.readLine().toLowerCase().strip();
 
             switch (key) {
-                case "in" -> in();
-                case "del" -> del();
-                case "count" -> count();
-                case "avg" -> avg();
-                case "median" -> median();
-                case "young" -> young();
-                case "old" -> old();
-                case "print" -> print();
+                case "in" -> addPerson();
+                case "del" -> deletePerson();
+                case "count" -> countPersons();
+                case "avg" -> avgAgePersons();
+                case "median" -> medianAgePersons();
+                case "young" -> youngPerson();
+                case "old" -> oldPerson();
+                case "print" -> printAllPersons();
                 case "help" -> help();
                 case "exit" -> {
                     exit();
@@ -42,38 +43,84 @@ public class AppMenu {
         }
     }
 
-    private void in() {
+    /*
+    Приложение просит ввести номер паспорта, имя и возраст пользователя и сохраняет данные в память.
+    Если пользователь с таким номером паспорта уже существует, выводится соответствующее сообщение и данные пользователя в памяти не обновляются.
+    Проверка на наличие пользователя по паспорту выполняется сразу, до ввода имени и возраста.
+    Возраст должен быть целым неотрицательным числом.
+    В случае успешного добавления данных пользователя выводится сообщение.*/
+    //O(1)
+    private void addPerson() throws IOException {
+        System.out.println("Добавление нового пользователя.\nВведите номер паспорта: ");
+        String passportNumber = br.readLine();
+        Person newPerson = new Person(passportNumber);
+        if(!persons.contains(newPerson)) {
+            System.out.println("Введите имя: ");
+            newPerson.setName(br.readLine());
+
+            System.out.println("Введите возраст: ");
+            if(br.readLine().matches(regExp)) {
+                newPerson.setAge(Integer.parseInt(br.readLine()));
+            }
+            persons.add(newPerson);
+            System.out.println("Пользователь успешно добавлен!");
+
+        } else {
+            System.out.println("Пользователь с таким номером паспорта уже внесен.");
+        }
 
     }
+    //O(1)
+    /*Приложение запрашивает номер паспорта и удаляет пользователя с таким паспортом.
+    Если пользователь удалён, выводится сообщение.
+    Если пользователь с указанным паспортом не найден, выводится сообщение.*/
+    private void deletePerson() throws IOException {
+        System.out.println("Удаление пользователя.\nВведите номер паспорта: ");
+        String passportNumber = br.readLine();
+        Person newPerson = new Person(passportNumber);
 
-    private void del() {
+        if(persons.remove(newPerson)) {
+            System.out.printf("Пользователь c номером паспорта %s успешно удален!%n", newPerson.getPassportNumber());
+        } else {
+            System.out.println("Пользователь с указанным паспортом не найден");
+        }
 
     }
-    private void count() {
-
+    //O(1)
+    //Выводит количество пользователей в памяти.
+    private void countPersons() {
+        System.out.printf("Количество пользователей %d. %n", persons.size());
     }
-
-    private void avg() {
-        System.out.println("Средний возраст: ");
+    //O(n)
+    //Программа рассчитывает и выводит средний возраст всех пользователей.
+    //В консоль выводится вычисленное значение
+    //Если не добавлено ни одного пользователя, выводится сообщение.
+    private void avgAgePersons() {
+        System.out.println("Средний возраст: %2d ");
     }
-
-    private void median(){
+    //O(n)
+    /*Программа рассчитывает и выводит медиану возраста всех пользователей.
+    В консоль выводится вычисленное значение:
+    Если не добавлено ни одного пользователя, выводится сообщение.*/
+    private void medianAgePersons(){
         System.out.println("Медиана возраста: ");
     }
-
-    private void young(){
-
-    }
-
-    private void old(){
+    //O(log n)
+    //Выводит самого молодого пользователя.
+    private void youngPerson(){
 
     }
+    //O(log n)
+    //Выводит самого старшего пользователя.
+    private void oldPerson(){
 
-    private void print(){
+    }
+    //O(n)
+    //Построчно выводит всех пользователей, отсортированных по возрасту от младшего к старшему.
+    private void printAllPersons(){
         System.out.println("Список всех пользователей:");
 
     }
-
     private void help(){
         String helpMessage = """
                 Список доступных комманд:
