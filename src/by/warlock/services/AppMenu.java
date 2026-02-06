@@ -1,4 +1,4 @@
-package by.warlock;
+package by.warlock.services;
 
 import by.warlock.models.Person;
 
@@ -12,7 +12,6 @@ public class AppMenu {
     Set<Person> persons;
     BufferedReader br;
     private String regExp = "^\\d{3,}$";
-    ;
 
     public AppMenu() {
         br = new BufferedReader(new InputStreamReader(System.in));

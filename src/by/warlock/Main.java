@@ -1,5 +1,7 @@
 package by.warlock;
 
+import by.warlock.services.AppMenu;
+
 import java.io.IOException;
 
 public class Main {
