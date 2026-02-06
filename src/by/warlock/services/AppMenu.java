@@ -19,7 +19,8 @@ public class AppMenu {
                 new Person("Александр", 20, "MP22222222"),
                 new Person("Сергей", 32, "MP333333333"),
                 new Person("Василий", 40, "MP44444444"),
-                new Person("Степан", 47, "MP55555555"))
+                new Person("Степан", 47, "MP55555555"),
+                new Person("Светлана", 17, "MP66666666"))
         );
     }
 
@@ -43,7 +44,6 @@ public class AppMenu {
                     return;
                 }
                 default -> System.out.println("Неизвестная команда. Попробуйте снова");
-
             }
         }
     }
@@ -114,7 +114,7 @@ public class AppMenu {
             System.out.println("Ни один пользователь не введен.");
             return;
         }
-        System.out.printf("Средний возраст: %2.1f ", (double) sumAge / persons.size());
+        System.out.printf("Средний возраст: %2.1f%n", (double) sumAge / persons.size());
     }
 
     //O(n)
@@ -122,7 +122,20 @@ public class AppMenu {
     В консоль выводится вычисленное значение:
     Если не добавлено ни одного пользователя, выводится сообщение.*/
     private void medianAgePersons() {
-        System.out.println("Медиана возраста: ");
+        double ageMedian = 0;
+        if (!persons.isEmpty()) {
+            List<Person> list = new ArrayList<>(persons);
+            Collections.sort(list);
+            if(list.size() % 2 == 0) {
+                ageMedian = (double)(list.get((list.size() / 2 - 1).getAge() + list.get(list.size()  / 2 + 1).getAge())) / 2;
+            } else {
+                ageMedian = list.get(list.size() / 2).getAge();
+            }
+        } else {
+            System.out.println("Ни один пользователь не введен.");
+            return;
+        }
+        System.out.printf("Медиана возраста: %2.1f%n", ageMedian );
     }
 
     //O(log n)
@@ -147,7 +160,7 @@ public class AppMenu {
     private void printAllPersons() {
         System.out.println("Список всех пользователей:");
         TreeSet<Person> sortedPersons = new TreeSet<>(persons);
-        for(Person person : sortedPersons) {
+        for (Person person : sortedPersons) {
             System.out.println(person.toString());
         }
     }
@@ -174,5 +187,4 @@ public class AppMenu {
         System.out.println("Программа завершена");
         System.exit(0);
     }
-
 }
