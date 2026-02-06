@@ -126,10 +126,11 @@ public class AppMenu {
         if (!persons.isEmpty()) {
             List<Person> list = new ArrayList<>(persons);
             Collections.sort(list);
+            int avgIndex = list.size() / 2;
             if(list.size() % 2 == 0) {
-                ageMedian = (double)(list.get((list.size() / 2 - 1).getAge() + list.get(list.size()  / 2 + 1).getAge())) / 2;
+                ageMedian = (double)(list.get(avgIndex - 1).getAge() + list.get(avgIndex).getAge()) / 2;
             } else {
-                ageMedian = list.get(list.size() / 2).getAge();
+                ageMedian = list.get(avgIndex).getAge();
             }
         } else {
             System.out.println("Ни один пользователь не введен.");
