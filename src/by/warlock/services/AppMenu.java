@@ -5,8 +5,7 @@ import by.warlock.models.Person;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class AppMenu {
     Set<Person> persons;
@@ -15,7 +14,13 @@ public class AppMenu {
 
     public AppMenu() {
         br = new BufferedReader(new InputStreamReader(System.in));
-        persons = new HashSet<>();
+        persons = new HashSet<>(Set.of(
+                new Person("Иван", 23, "MP11111111"),
+                new Person("Александр", 20, "MP22222222"),
+                new Person("Сергей", 32, "MP333333333"),
+                new Person("Василий", 40, "MP44444444"),
+                new Person("Степан", 47, "MP55555555"))
+        );
     }
 
     public void start() throws IOException {
@@ -85,13 +90,12 @@ public class AppMenu {
         } else {
             System.out.println("Пользователь с указанным паспортом не найден");
         }
-
     }
 
     //O(1)
     //Выводит количество пользователей в памяти.
     private void countPersons() {
-        System.out.printf("Количество пользователей %d. %n", persons.size());
+        System.out.printf("Количество пользователей: %d. %n", persons.size());
     }
 
     //O(n)
@@ -99,7 +103,18 @@ public class AppMenu {
     //В консоль выводится вычисленное значение
     //Если не добавлено ни одного пользователя, выводится сообщение.
     private void avgAgePersons() {
-        System.out.println("Средний возраст: %2d ");
+        int sumAge = 0;
+        if (!persons.isEmpty()) {
+            Iterator<Person> personIterator = persons.iterator();
+            while (personIterator.hasNext()) {
+                Person person = personIterator.next();
+                sumAge += person.getAge();
+            }
+        } else {
+            System.out.println("Ни один пользователь не введен.");
+            return;
+        }
+        System.out.printf("Средний возраст: %2.1f ", (double) sumAge / persons.size());
     }
 
     //O(n)
@@ -113,20 +128,28 @@ public class AppMenu {
     //O(log n)
     //Выводит самого молодого пользователя.
     private void youngPerson() {
+        System.out.println("Cамый молодой пользователь:");
+        TreeSet<Person> sortedPersons = new TreeSet<>(persons);
+        System.out.println(sortedPersons.getFirst().toString());
 
     }
 
     //O(log n)
     //Выводит самого старшего пользователя.
     private void oldPerson() {
-
+        System.out.println("Cамый старший пользователь:");
+        TreeSet<Person> sortedPersons = new TreeSet<>(persons);
+        System.out.println(sortedPersons.getLast().toString());
     }
 
     //O(n)
     //Построчно выводит всех пользователей, отсортированных по возрасту от младшего к старшему.
     private void printAllPersons() {
         System.out.println("Список всех пользователей:");
-
+        TreeSet<Person> sortedPersons = new TreeSet<>(persons);
+        for(Person person : sortedPersons) {
+            System.out.println(person.toString());
+        }
     }
 
     private void help() {

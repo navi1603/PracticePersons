@@ -1,5 +1,6 @@
 package by.warlock.models;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 public class Person implements Comparable<Person> {
@@ -59,15 +60,16 @@ public class Person implements Comparable<Person> {
 
     @Override
     public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                ", passportNumber='" + passportNumber + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        String message = String.format("User name is %s, %d years old. Passport number is %s.", name, age, passportNumber);
+        sb.append(message);
+        return sb.toString();
     }
 
     @Override
-    public int compareTo(Person o1) {
-        return Integer.compare(this.age, o1.age);
+    public int compareTo(Person o2) {
+        if(this.getAge() > o2.getAge()) return 1;
+        else if(this.getAge() < o2.getAge()) return -1;
+        return 0;
     }
 }
