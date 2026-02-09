@@ -6,13 +6,9 @@ import java.util.*;
 
 public class PersonsAccounting {
     Set<Person> persons;
-    private final String ageRegExp;
-    private final String passportRegExp;
     private TreeSet<Person> sortedPersons;
 
-    public PersonsAccounting(String ageRegExp, String passportRegExp) {
-        this.ageRegExp = ageRegExp;
-        this.passportRegExp = passportRegExp;
+    public PersonsAccounting() {
         persons = new HashSet<>(Set.of(
                 new Person("Иван", 23, "MP11111111"),
                 new Person("Александр", 20, "MP22222222"),
@@ -21,6 +17,10 @@ public class PersonsAccounting {
                 new Person("Степан", 47, "MP55555555"),
                 new Person("Светлана", 17, "MP66666666"))
         );
+    }
+
+    public boolean containsPerson(Person person){
+        return persons.contains(person);
     }
 
     /*O(1)
