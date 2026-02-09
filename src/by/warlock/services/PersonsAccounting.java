@@ -36,8 +36,8 @@ public class PersonsAccounting {
 
     //O(1)
     public boolean deletePerson(String passportNumber) {
-        Person person = createPersonByPassportNumber(passportNumber);
-        return person != null && persons.remove(person);
+        Person person = new Person(passportNumber);
+        return persons.remove(person);
     }
 
     //O(1)
