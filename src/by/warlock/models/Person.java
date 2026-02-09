@@ -1,12 +1,14 @@
 package by.warlock.models;
 
-import java.util.Comparator;
 import java.util.Objects;
 
 public class Person implements Comparable<Person> {
     private String passportNumber;
     private String name;
     private int age;
+
+    public Person() {
+    }
 
     public Person(String passportNumber) {
         setPassportNumber(passportNumber);
@@ -61,7 +63,7 @@ public class Person implements Comparable<Person> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        String message = String.format("User name is %s, %d years old. Passport number is %s.", name, age, passportNumber);
+        String message = String.format("User name is %s, %d years old. Passport number is %s.%n", name, age, passportNumber);
         sb.append(message);
         return sb.toString();
     }
