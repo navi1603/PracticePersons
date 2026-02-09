@@ -51,7 +51,17 @@ public class AppMenu {
     private void add() throws IOException {
         System.out.println("Добавление нового пользователя.\nВведите номер паспорта: ");
         String passportNumber = br.readLine();
-        Person newPerson = personsAccounting.createPersonByPassportNumber(passportNumber);
+        Person newPerson;
+
+        if (passportNumber.matches(passportRegExp)) {
+            newPerson = new Person(passportNumber);
+        } else {
+            System.out.println("Неверный формат номера паспорта.\n" +
+                    "Номер содержит 2 букв латинского алфавита и 6 цифр.\n" +
+                    "Например, BY009754.");
+            return;
+        }
+
         if (!persons.contains(newPerson)) {
             System.out.println("Введите имя: ");
             newPerson.setName(br.readLine());

@@ -34,19 +34,6 @@ public class PersonsAccounting {
         return persons.add(person);
     }
 
-    public Person createPersonByPassportNumber(String passportNumber) {
-        Person newPerson = null;
-        if (passportNumber.matches(passportRegExp)) {
-            newPerson = new Person();
-            newPerson.setPassportNumber(passportNumber);
-        } else {
-            System.out.println("Неверный формат номера паспорта.\n" +
-                    "Номер соcтоит из 2 букв латинского алфавита и 6 цифр.\n" +
-                    "Например, BY009754.");
-        }
-        return newPerson;
-    }
-
     //O(1)
     public boolean deletePerson(String passportNumber) {
         Person person = createPersonByPassportNumber(passportNumber);
