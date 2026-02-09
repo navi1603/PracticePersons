@@ -89,7 +89,6 @@ public class PersonsAccounting {
     //O(log n)
     //Выводит самого старшего пользователя.
     public String getOldPerson() {
-        System.out.println("Cамый старший пользователь:");
         sortedPersons = new TreeSet<>(persons);
         return sortedPersons.getLast().toString();
     }

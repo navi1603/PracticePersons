@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class AppMenu {
     BufferedReader br;
-    private final String ageRegExp = "^\\d{3,}$";
+    private final String ageRegExp = "^[0-9]{1,3}$";
     private final String passportRegExp = "^[A-Z]{2}\\d{6}$";
     PersonsAccounting personsAccounting;
 
@@ -50,19 +50,24 @@ public class AppMenu {
     В случае успешного добавления данных пользователя выводится сообщение.*/
     private void add() throws IOException {
         System.out.println("Добавление нового пользователя.\nВведите номер паспорта: ");
-        String passportNumber = br.readLine();
+        String passportNumber = br.readLine().toUpperCase().strip();
         Person newPerson = null;
         if (checkPassportNumberFormat(passportNumber)) {
             newPerson = new Person(passportNumber);
+        } else {
+            return;
         }
 
-        if (!(Objects.isNull(newPerson) && personsAccounting.containsPerson(newPerson))) {
+        if (Objects.nonNull(newPerson) && !personsAccounting.containsPerson(newPerson)) {
             System.out.println("Введите имя: ");
             newPerson.setName(br.readLine());
 
             System.out.println("Введите возраст: ");
-            if (checkAgeFormat(ageRegExp)) {
-                newPerson.setAge(Integer.parseInt(br.readLine()));
+            String age = br.readLine().strip();
+            if (checkAgeFormat(age)) {
+                newPerson.setAge(Integer.parseInt(age));
+            } else {
+                return;
             }
             personsAccounting.addPerson(newPerson);
             System.out.println("Пользователь успешно добавлен!");
@@ -70,27 +75,7 @@ public class AppMenu {
             System.out.println("Пользователь с таким номером паспорта уже внесен.");
         }
     }
-    private boolean checkPassportNumberFormat(String passportNumber){
-        boolean respond = passportNumber.matches(passportRegExp);
-        if (!respond) {
-            System.out.println("Неверный формат номера паспорта.\n" +
-                    "Номер содержит 2 букв латинского алфавита и 6 цифр.\n" +
-                    "Например, BY009754.");
-            respond = false;
-        }
-        return respond;
-    }
 
-    private boolean checkAgeFormat(String personAge){
-        boolean respond = personAge.matches(ageRegExp);
-        if (!respond) {
-            System.out.println("Неверный формат возраста.\n" +
-                    "Укажите возраст цифрами не более 3.\n" +
-                    "Например, 29.");
-            respond = false;
-        }
-        return respond;
-    }
 
     /*O(1)
     Приложение запрашивает номер паспорта и удаляет пользователя с таким паспортом.
@@ -120,8 +105,9 @@ public class AppMenu {
         if(DoubleUtils.equals(personsAccounting.getAvgAgePersons(), 0.0)) {
             System.out.println("Ни один пользователь не введен.");
             return;
+        } else {
+            System.out.printf("Средний возраст: %2.1f%n", personsAccounting.getAvgAgePersons());
         }
-        System.out.printf("Средний возраст: %2.1f%n", personsAccounting.getAvgAgePersons());
     }
 
     /*O(n)
@@ -131,8 +117,9 @@ public class AppMenu {
     private void medianAge() {
         if(DoubleUtils.equals(personsAccounting.getMedianAgePersons(), 0.0)) {
             System.out.println("Ни один пользователь не введен.");
+        } else {
+            System.out.printf("Медиана возраста: %2.1f%n", personsAccounting.getMedianAgePersons());
         }
-        System.out.printf("Медиана возраста: %2.1f%n", personsAccounting.getMedianAgePersons());
     }
 
     //O(log n)
@@ -174,5 +161,26 @@ public class AppMenu {
     private void exit() {
         System.out.println("Программа завершена");
         System.exit(0);
+    }
+    private boolean checkPassportNumberFormat(String passportNumber){
+        boolean respond = passportNumber.matches(passportRegExp);
+        if (!respond) {
+            System.out.println("Неверный формат номера паспорта.\n" +
+                    "Номер содержит 2 букв латинского алфавита и 6 цифр.\n" +
+                    "Например, BY009754.");
+            respond = false;
+        }
+        return respond;
+    }
+
+    private boolean checkAgeFormat(String personAge){
+        boolean respond = personAge.matches(ageRegExp);
+        if (!respond) {
+            System.out.println("Неверный формат возраста.\n" +
+                    "Укажите возраст цифрами не более 3.\n" +
+                    "Например, 29.");
+            respond = false;
+        }
+        return respond;
     }
 }
