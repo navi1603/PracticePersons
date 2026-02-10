@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class AppMenu {
     BufferedReader br;
-    private final String ageRegExp = "^[0-9]{1,3}$";
+    private final String ageRegExp = "^\\d{1,3}$";
     private final String passportRegExp = "^[A-Z]{2}\\d{6}$";
     PersonsAccounting personsAccounting;
 
@@ -42,45 +42,40 @@ public class AppMenu {
         }
     }
 
-    /* O(1)
-    Приложение просит ввести номер паспорта, имя и возраст пользователя и сохраняет данные в память.
-    Если пользователь с таким номером паспорта уже существует, выводится соответствующее сообщение и данные пользователя в памяти не обновляются.
-    Проверка на наличие пользователя по паспорту выполняется сразу, до ввода имени и возраста.
-    Возраст должен быть целым неотрицательным числом.
-    В случае успешного добавления данных пользователя выводится сообщение.*/
     private void add() throws IOException {
         System.out.println("Добавление нового пользователя.\nВведите номер паспорта: ");
-        String passportNumber = br.readLine().toUpperCase().strip();
+        String passportNumber;
         Person newPerson = null;
-        if (checkPassportNumberFormat(passportNumber)) {
-            newPerson = new Person(passportNumber);
-        } else {
-            return;
-        }
 
-        if (Objects.nonNull(newPerson) && !personsAccounting.containsPerson(newPerson)) {
-            System.out.println("Введите имя: ");
-            newPerson.setName(br.readLine());
+        while (true) {
+            passportNumber = br.readLine().toUpperCase().strip();
+            if (checkPassportNumberFormat(passportNumber)) {
+                if (Objects.isNull(newPerson)) {
+                    newPerson = new Person(passportNumber);
+                }
+                if (!personsAccounting.containsPerson(newPerson)) {
+                    System.out.println("Введите имя: ");
+                    newPerson.setName(br.readLine());
 
-            System.out.println("Введите возраст: ");
-            String age = br.readLine().strip();
-            if (checkAgeFormat(age)) {
-                newPerson.setAge(Integer.parseInt(age));
-            } else {
-                return;
+                    System.out.println("Введите возраст: ");
+                    String age;
+                    while (true) {
+                        age = br.readLine().strip();
+                        if (checkAgeFormat(age)) {
+                            newPerson.setAge(Integer.parseInt(age));
+                            personsAccounting.addPerson(newPerson);
+                            System.out.println("Пользователь успешно добавлен!");
+                            break;
+                        }
+                    }
+                } else {
+                    System.out.println("Пользователь с таким номером паспорта уже внесен.");
+                }
+                break;
             }
-            personsAccounting.addPerson(newPerson);
-            System.out.println("Пользователь успешно добавлен!");
-        } else {
-            System.out.println("Пользователь с таким номером паспорта уже внесен.");
         }
     }
 
-
-    /*O(1)
-    Приложение запрашивает номер паспорта и удаляет пользователя с таким паспортом.
-    Если пользователь удалён, выводится сообщение.
-    Если пользователь с указанным паспортом не найден, выводится сообщение.*/
     private void delete() throws IOException {
         System.out.println("Удаление пользователя.\nВведите номер паспорта: ");
         String passportNumber = br.readLine();
@@ -91,46 +86,31 @@ public class AppMenu {
         }
     }
 
-    //O(1)
-    //Выводит количество пользователей в памяти.
     private void count() {
         System.out.printf("Количество пользователей: %d. %n", personsAccounting.getCountPersons());
     }
 
-    //O(n)
-    //Программа рассчитывает и выводит средний возраст всех пользователей.
-    //В консоль выводится вычисленное значение
-    //Если не добавлено ни одного пользователя, выводится сообщение.
     private void avgAge() {
-        if(DoubleUtils.equals(personsAccounting.getAvgAgePersons(), 0.0)) {
+        if (DoubleUtils.equals(personsAccounting.getAvgAgePersons(), 0.0)) {
             System.out.println("Ни один пользователь не введен.");
-            return;
         } else {
             System.out.printf("Средний возраст: %2.1f%n", personsAccounting.getAvgAgePersons());
         }
     }
 
-    /*O(n)
-    Программа рассчитывает и выводит медиану возраста всех пользователей.
-    В консоль выводится вычисленное значение:
-    Если не добавлено ни одного пользователя, выводится сообщение.*/
     private void medianAge() {
-        if(DoubleUtils.equals(personsAccounting.getMedianAgePersons(), 0.0)) {
+        if (DoubleUtils.equals(personsAccounting.getMedianAgePersons(), 0.0)) {
             System.out.println("Ни один пользователь не введен.");
         } else {
             System.out.printf("Медиана возраста: %2.1f%n", personsAccounting.getMedianAgePersons());
         }
     }
 
-    //O(log n)
-    //Выводит самого молодого пользователя.
     private void young() {
         System.out.println("Cамый молодой пользователь:");
         System.out.println(personsAccounting.getYoungPerson());
     }
 
-    //O(log n)
-    //Выводит самого старшего пользователя.
     private void old() {
         System.out.println("Cамый старший пользователь:");
         System.out.println(personsAccounting.getOldPerson());
@@ -162,24 +142,25 @@ public class AppMenu {
         System.out.println("Программа завершена");
         System.exit(0);
     }
-    private boolean checkPassportNumberFormat(String passportNumber){
+
+    private boolean checkPassportNumberFormat(String passportNumber) {
         boolean respond = passportNumber.matches(passportRegExp);
         if (!respond) {
-            System.out.println("Неверный формат номера паспорта.\n" +
-                    "Номер содержит 2 букв латинского алфавита и 6 цифр.\n" +
-                    "Например, BY009754.");
-            respond = false;
+            String message = """
+                    Неверный формат. Номер содержит 2 букв латинского алфавита и 6 цифр.
+                    Например, BY009754. Попробуйте еще раз...""";
+            System.out.println(message);
         }
         return respond;
     }
 
-    private boolean checkAgeFormat(String personAge){
+    private boolean checkAgeFormat(String personAge) {
         boolean respond = personAge.matches(ageRegExp);
         if (!respond) {
-            System.out.println("Неверный формат возраста.\n" +
-                    "Укажите возраст цифрами не более 3.\n" +
-                    "Например, 29.");
-            respond = false;
+            String message = """
+                    Неверный формат. Укажите возраст цифрами не более 3.
+                    Например, 29. Попробуйте еще раз...""";
+            System.out.println(message);
         }
         return respond;
     }

@@ -7,8 +7,6 @@ public class Person implements Comparable<Person> {
     private String name;
     private int age;
 
-    public Person() {
-    }
 
     public Person(String passportNumber) {
         setPassportNumber(passportNumber);
@@ -20,16 +18,8 @@ public class Person implements Comparable<Person> {
         setAge(age);
     }
 
-    public String getPassportNumber() {
-        return passportNumber;
-    }
-
     public void setPassportNumber(String passportNumber) {
-        this.passportNumber = passportNumber.toUpperCase().strip();
-    }
-
-    public String getName() {
-        return name;
+        this.passportNumber = passportNumber.toUpperCase().trim();
     }
 
     public void setName(String name) {
@@ -44,7 +34,7 @@ public class Person implements Comparable<Person> {
         if (age > 0) {
             this.age = age;
         } else {
-            System.out.println("Возраст не может быть отрицательным числом или 0.");
+            System.out.println("Возраст должен быть положительным числом");
         }
     }
 
@@ -57,21 +47,18 @@ public class Person implements Comparable<Person> {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(passportNumber) * 36;
+        return Objects.hash(passportNumber);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        String message = String.format("User name is %s, %d years old. Passport number is %s.%n", name, age, passportNumber);
-        sb.append(message);
-        return sb.toString();
+        return String.format("Имя: %s, Возраст: %d, Номер паспорта: %s.%n", name, age, passportNumber);
     }
 
     @Override
     public int compareTo(Person o2) {
-        if(this.getAge() > o2.getAge()) return 1;
-        else if(this.getAge() < o2.getAge()) return -1;
+        if (this.getAge() > o2.getAge()) return 1;
+        else if (this.getAge() < o2.getAge()) return -1;
         return 0;
     }
 }
