@@ -10,12 +10,12 @@ public class PersonsAccounting {
 
     public PersonsAccounting() {
         persons = new HashSet<>(Set.of(
-                new Person("Иван", 23, "MP11111111"),
-                new Person("Александр", 20, "MP22222222"),
-                new Person("Сергей", 32, "MP333333333"),
-                new Person("Василий", 40, "MP44444444"),
-                new Person("Степан", 47, "MP55555555"),
-                new Person("Светлана", 17, "MP66666666"))
+                new Person("Иван", 23, "MP111111"),
+                new Person("Александр", 20, "MP222222"),
+                new Person("Сергей", 32, "MP333333"),
+                new Person("Василий", 40, "MP444444"),
+                new Person("Степан", 47, "MP555555"),
+                new Person("Светлана", 17, "MP666666"))
         );
     }
 

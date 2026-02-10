@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class AppMenu {
     BufferedReader br;
-    private final String ageRegExp = "^[0-9]{1,3}$";
+    private final String ageRegExp = "^\\d{1,3}$";
     private final String passportRegExp = "^[A-Z]{2}\\d{6}$";
     PersonsAccounting personsAccounting;
 
@@ -52,30 +52,25 @@ public class AppMenu {
         System.out.println("Добавление нового пользователя.\nВведите номер паспорта: ");
         String passportNumber = br.readLine().toUpperCase().strip();
         Person newPerson = null;
+
         if (checkPassportNumberFormat(passportNumber)) {
             newPerson = new Person(passportNumber);
-        } else {
-            return;
-        }
+            if (Objects.nonNull(newPerson) && !personsAccounting.containsPerson(newPerson)) {
+                System.out.println("Введите имя: ");
+                newPerson.setName(br.readLine());
 
-        if (Objects.nonNull(newPerson) && !personsAccounting.containsPerson(newPerson)) {
-            System.out.println("Введите имя: ");
-            newPerson.setName(br.readLine());
-
-            System.out.println("Введите возраст: ");
-            String age = br.readLine().strip();
-            if (checkAgeFormat(age)) {
-                newPerson.setAge(Integer.parseInt(age));
+                System.out.println("Введите возраст: ");
+                String age = br.readLine().strip();
+                if (checkAgeFormat(age)) {
+                    newPerson.setAge(Integer.parseInt(age));
+                    personsAccounting.addPerson(newPerson);
+                    System.out.println("Пользователь успешно добавлен!");
+                }
             } else {
-                return;
+                System.out.println("Пользователь с таким номером паспорта уже внесен.");
             }
-            personsAccounting.addPerson(newPerson);
-            System.out.println("Пользователь успешно добавлен!");
-        } else {
-            System.out.println("Пользователь с таким номером паспорта уже внесен.");
         }
     }
-
 
     /*O(1)
     Приложение запрашивает номер паспорта и удаляет пользователя с таким паспортом.
@@ -104,7 +99,6 @@ public class AppMenu {
     private void avgAge() {
         if(DoubleUtils.equals(personsAccounting.getAvgAgePersons(), 0.0)) {
             System.out.println("Ни один пользователь не введен.");
-            return;
         } else {
             System.out.printf("Средний возраст: %2.1f%n", personsAccounting.getAvgAgePersons());
         }

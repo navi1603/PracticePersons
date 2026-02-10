@@ -7,8 +7,6 @@ public class Person implements Comparable<Person> {
     private String name;
     private int age;
 
-    public Person() {
-    }
 
     public Person(String passportNumber) {
         setPassportNumber(passportNumber);
@@ -20,16 +18,8 @@ public class Person implements Comparable<Person> {
         setAge(age);
     }
 
-    public String getPassportNumber() {
-        return passportNumber;
-    }
-
     public void setPassportNumber(String passportNumber) {
         this.passportNumber = passportNumber.toUpperCase().strip();
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setName(String name) {
